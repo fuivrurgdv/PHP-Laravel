@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{-- <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Custom Login</title>
+
+    <!-- Custom fonts and styles -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600&display=swap" rel="stylesheet">
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"> --}}
+    <style>
+        /* CSS bạn đã cung cấp */
+        :root {
+          --red: #ee596f;
+          --yellow: #feb800;
+          --green: #07a787;
+          --purple: #c765d0;
+          --gray: #787878;
+          --gray-light: #eee;
+          --gray-dark: #2e3c54;
+          --font: "Montserrat", sans-serif;
+        }
+        
+        a {
+          text-decoration: none;
+        }
+
+        a, button {
+          cursor: pointer;
+          outline: none;
+        }
+
+        .sign-up {
+          font-family: var(--font);
+          width: 100%;
+          max-width: 800px;
+          height: 600px;
+          background-color: var(--gray-light);
+          margin: 25px auto;
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .sign-up__form {
+          background-color: white;
+          width: 80%;
+          height: 70%;
+          margin: 0 auto;
+          position: relative;
+          z-index: 10;
+          border-radius: 8px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          box-shadow: 0 20px 20px 10px rgba(0,0,0,.15);
+        }
+
+        .sign-up__content {
+          padding: 40px;
+          display: flex;
+          flex-flow: column nowrap;
+        }
+
+        .sign-up__title {
+          color: var(--gray-dark);
+          font-weight: 400;
+          text-transform: uppercase;
+          font-size: 25px;
+          margin-bottom: 30px;
+        }
+
+        .sign-up__inp {
+          outline: none;
+          margin-bottom: 15px;
+          padding: 20px 20px 20px 0;
+          border: 0;
+          border-bottom: 1px solid var(--gray-light);
+          text-transform: uppercase;
+          font-size: 16px;
+          font-weight: 400;
+          font-family: var(--font);
+        }
+
+        .sign-up__buttons {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .sign-up__buttons > * {
+          width: 100%;
+          padding: 20px 15px;
+          border: 0;
+          text-transform: uppercase;
+          font-size: 16px;
+        }
+
+        .circle {
+          position: absolute;
+          border-radius: 50%;
+        }
+
+        .circle--red {
+          width: 250px;
+          height: 250px;
+          background-color: var(--red);
+          top: 25px;
+          left: 25px;
+          z-index: 1;
+        }
+
+        .circle--yellow {
+          width: 100px;
+          height: 100px;
+          background-color: var(--yellow);
+          top: 50px;
+          left: 230px;
+        }
+
+        .circle--green {
+          width: 300px;
+          height: 300px;
+          background-color: var(--green);
+          bottom: 50px;
+          left: 200px;
+          z-index: 2;
+        }
+
+        .circle--purple {
+          width: 300px;
+          height: 300px;
+          background-color: var(--purple);
+          bottom: -50px;
+          right: -50px;
+          transform: scale(1.8);
+        }
+
+        .forgot__password {
+          text-align: center;
+          text-transform: uppercase;
+          color: var(--gray);
+          display: inline-block;
+          margin-top: 20px;
+        }
+
+        .btn--register {
+          background-color: var(--gray-light);
+          color: var(--gray);
+        }
+
+        .btn--signin {
+          background-color: var(--gray-dark);
+          color: white;
+          text-align: center;
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container sign-up">
+        <!-- Outer Row -->
+        <div class="circle circle--red"></div>
+        <div class="circle circle--yellow"></div>
+        <div class="circle circle--green"></div>
+        <div class="circle circle--purple"></div>
+
+        <form class="sign-up__form user" action="" method="post">
+            @csrf
+            <div class="sign-up__content">
+                <h2 class="sign-up__title text-gray-900 mb-4">Đăng nhập tài khoản</h2>
+                
+                @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+                @endif
+
+                <div class="form-group">
+                    <input type="email" name="email" class="form-control form-control-user sign-up__inp" placeholder="Tên đăng nhập..." required="required">
+                    @error('email') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control form-control-user sign-up__inp" placeholder="Mật khẩu" required="required">
+                    @error('password') <small class="text-danger">{{ $message }}</small> @enderror
+                </div>
+                
+                {{-- <a class="forgot__password" href="{{route('forgot')}}">Quên mật khẩu?</a> --}}
+            </div>
+            
+            <div class="sign-up__buttons">
+                {{-- <a class="btn btn--register" href="{{route('register')}}">Tạo tài khoản</a> --}}
+                <button type="submit" class="btn btn--signin">Đăng nhập</button>
+            </div>
+        </form>
+    </div>
+
+    {{-- <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script> --}}
+</body>
+
+</html>
