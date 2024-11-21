@@ -116,6 +116,14 @@
                 <i class="zmdi zmdi-link"></i> Quản lý bậc lương
               </a>
             </li>
+            <li>
+              <a href="{{ route('setting') }}">
+                <i class="zmdi zmdi-link"></i> Cấu hình thời gian
+              </a>
+            </li>
+            <li>
+            <a href="{{ route('attendance.requests') }}" >Quản lý đơn giải trình</a>
+          </li>
           </ul>
         </div>
         <!-- Content -->

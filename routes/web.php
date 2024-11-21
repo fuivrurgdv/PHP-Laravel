@@ -7,6 +7,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TestExcelController;
 use App\Exports\UsersExport;
 use App\Http\Controllers\SalaryController;
+use App\Http\Controllers\SettingController;
+use App\Models\Setting;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 
@@ -79,13 +81,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/attendance/allUser', [User_attendanceController::class, 'reportAllUsers'])->name('attendance.all');
     Route::get('/attendance/department-report', [User_attendanceController::class, 'departmentReport'])->name('department.report');
     Route::get('/attendance/search', [User_attendanceController::class, 'searchByDepartment'])->name('attendance.search');
-
+    
+    Route::post('/attendance/submit-reason/{attendance}', [User_attendanceController::class, 'submitReason'])->name('attendance.submit-reason');
+    Route::get('/attendance/requests', [User_attendanceController::class, 'pendingRequests'])->name('attendance.requests');
+    Route::post('/attendance/requests/{id}/accept', [User_attendanceController::class, 'acceptRequest'])->name('attendance.requests.accept');
+    Route::post('/attendance/requests/{id}/reject', [User_attendanceController::class, 'rejectRequest'])->name('attendance.requests.reject');
 });
 
 // Route::get('/users/export', function () {
 //     dd('Export route is called'); // Kiểm tra xem route có được gọi hay không
 //     return Excel::download(new UsersExport, 'users.xlsx');
 // });
+Route::middleware('auth')->group(function () {
+    Route::get('/setting', [SettingController::class, 'showWorkTime'])->name('setting');
+    Route::post('/setting/update', [SettingController::class, 'updateWorkTime'])->name('setting.update');
+ });
 
 Route::middleware('auth')->group(function () {
    Route::get('/salary',[SalaryController::class, 'index'])->name('salary');

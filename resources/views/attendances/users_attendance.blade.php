@@ -33,11 +33,11 @@
 
 <body id="page-top">
     <div id="wrapper">
-        @include('fe_user.slidebar') <!-- Sidebar -->
+        @include('user.slidebar') <!-- Sidebar -->
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                @include('fe_admin.topbar') <!-- Topbar -->
+                @include('admin.topbar') <!-- Topbar -->
 
                 <div class="container-fluid">
                    
@@ -93,15 +93,65 @@
                                 <td>{{ ucfirst($attendance->type) }}</td> <!-- Checkin/Checkout -->
                                 <td>{{ $attendance->time->format('H:i d/m/Y') }}</td>
                                 <td>
-                                    {{ $attendance->status ? 'Hợp lệ' : 'Không hợp lệ' }} <!-- Hiển thị trạng thái -->
+                                    {{-- {{ $attendance->status ? 'Hợp lệ' : 'Không hợp lệ' }} <!-- Hiển thị trạng thái --> --}}
+                                    @if ($attendance->status == 1)
+                                            <p class="text-success">Hợp lệ</p>
+                                        @elseif ($attendance->status == 0)
+                                            <p class="text-danger">Không hợp lệ</p>
+                                        @elseif ($attendance->status == 3)
+                                            <p>Đang xem xét</p>
+                                        
+                                        @endif
                                 </td>
-
+                                <td>
+                                    @if ($attendance->status == 0 )
+                                        <!-- Button trigger modal -->
+                                        <button class="btn btn-warning" data-toggle="modal" data-target="#editModal"><i class="fas fa-paper-plane"></i></button>
+                                            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="editModalLabel" style="color: black">Giải trình</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('attendance.submit-reason', $attendance->id) }}" method="POST">
+                                                                @csrf
+                                                                
+                                      
+                                                                <div class="form-group">
+                                                                    <label for="status">Nhập lý do giải trình</label>
+                                                                    <select name="reason" class="form-control" id="reasonSelect" required>
+                                                                        <option value="Tắc
+                                                                            đường">Tắc
+                                                                            đường</option>
+                                                                        <option value="Thủng lốp">Thủng lốp</option>
+                                                                        <option value="other">Lý do khác</option>
+                                                                            
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group " id="otherReasonText" style="display: none;">
+                                                                    
+                                                                    <label for="customReason">Lý do khác:</label>
+                                                                    <textarea name="custom_reason" id="customReason" class="form-control"></textarea>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary">Gửi</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    @endif
+                                </td>
                               </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
+            {{ $attendances->links() }}
            
             {{-- <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
@@ -130,6 +180,21 @@
 
     <!-- Custom scripts for all pages-->
     <script src="fe-access/js/sb-admin-2.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const reasonSelect = document.getElementById("reasonSelect");
+            const otherReasonText = document.getElementById("otherReasonText");
+    
+            reasonSelect.addEventListener("change", function () {
+                if (this.value === "other") {
+                    otherReasonText.style.display = "block";
+                } else {
+                    otherReasonText.style.display = "none";
+                }
+            });
+        });
+    </script>
 </body>
+
 
 </html>

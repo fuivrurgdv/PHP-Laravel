@@ -21,11 +21,11 @@
 
 <body id="page-top">
     <div id="wrapper">
-        @include('fe_user.slidebar') <!-- Sidebar -->
+        @include('user.slidebar') <!-- Sidebar -->
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                @include('fe_admin.topbar') <!-- Topbar -->
+                @include('admin.topbar') <!-- Topbar -->
 
                 <div class="container-fluid">
                    

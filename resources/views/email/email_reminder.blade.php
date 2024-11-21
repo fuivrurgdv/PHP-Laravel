@@ -8,7 +8,7 @@
 <body>
     <div style="font-family: Arial, sans-serif; line-height: 1.5; padding: 20px;">
         <h2 style="color: #333;">Nhắc nhở chấm công check-in</h2>
-        <p>Kính gửi <strong>[{{ $user->name }}]</strong>,</p>
+        <p>Kính gửi <strong>[{{ $name }}]</strong>,</p>
         <p>
             Xin vui lòng nhớ thực hiện chấm công <strong>Check-in</strong> khi đến văn phòng hôm nay. 
             Việc này rất quan trọng để đảm bảo ghi nhận thời gian làm việc của bạn.

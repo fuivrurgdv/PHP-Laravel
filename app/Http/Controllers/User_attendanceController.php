@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\User;
 use App\Models\User_attendance;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 class User_attendanceController extends Controller
@@ -14,7 +16,9 @@ class User_attendanceController extends Controller
     // Phương thức hiển thị lịch sử chấm công của người dùng
     public function index()
     {
-        $attendances = User_attendance::where('user_id', Auth::id())->get();
+        $query = User_attendance::where('user_id', Auth::id());
+        $attendances = $query->orderBy('created_at', 'desc') // Sắp xếp theo thời gian mới nhất
+            ->paginate(5); // Phân trang, mỗi trang có 5 bản ghi
         return view('attendances.users_attendance', compact('attendances'));
     }
 
@@ -26,19 +30,34 @@ class User_attendanceController extends Controller
             ->orderBy('time', 'desc')
             ->first();
 
+
+
         if (!$latestAttendance || $latestAttendance->type === 'out') {
+
+            $working_start = Carbon::parse(Setting::where('key', 'working_start')->value('value'));
+            $working_end = Setting::where('key', 'working_end')->value('value');
+            $currentTime = now()->timezone('Asia/Ho_Chi_Minh');
+
+            $status = 1;
+
+            if ($currentTime->lt($working_start)) {
+                $status = 1;
+            } else {
+                $status = 0;
+            }
+
             $attendance = User_attendance::create([
-                'time' => now()->timezone('Asia/Ho_Chi_Minh'),
+                'time' => $currentTime,
                 'type' => 'in',
                 'user_id' => $user->id,
-                'status' => true,
+                'status' => $status,
                 'justification' => '',
                 'created_by' => $user->id,
                 'updated_by' => $user->id,
             ]);
 
             // Check validity
-            $attendance->checkValidity();
+            $attendance->save();
 
             return redirect()->back()->with('message', 'Đã Check in.');
         } else {
@@ -53,82 +72,158 @@ class User_attendanceController extends Controller
             ->orderBy('time', 'desc')
             ->first();
 
+
         if ($latestAttendance && $latestAttendance->type === 'in') {
+
+            $working_start = Carbon::parse(Setting::where('key', 'working_start')->value('value'));
+            $working_end = Setting::where('key', 'working_end')->value('value');
+            $currentTime = now()->timezone('Asia/Ho_Chi_Minh');
+
+            $checkInTime = $latestAttendance->created_at;
+            $checkOutTime = now()->timezone('Asia/Ho_Chi_Minh');
+            
+            $status = 1;
+
+            if ($currentTime->gt($working_end)) {
+                $status = 1;
+            } else {
+                $status = 0;
+            }
             $attendance = User_attendance::create([
-                'time' => now()->timezone('Asia/Ho_Chi_Minh'),
+                'time' => $checkOutTime,
                 'type' => 'out',
                 'user_id' => $user->id,
-                'status' => '1',
+                'status' => $status,
                 'justification' => '',
                 'created_by' => $user->id,
                 'updated_by' => $user->id,
             ]);
 
             // Check validity
-            $attendance->checkValidity();
+            $attendance->save();
 
-            return redirect()->back()->with('message', 'Check out thành công.');
+            return redirect()->back()->with('message', 'Đã Check out .');
         } else {
             return redirect()->back()->with('message', 'Bạn chưa Check In, không thể Check Out!');
         }
+    }
+
+    public function submitReason(Request $request, User_Attendance $attendance)
+    {
+        // Xử lý lý do giải trình
+        $reason = $request->reason; // Lý do từ radio button
+
+        // Nếu lý do là "other", sử dụng nội dung từ custom_reason
+        if ($reason === 'other') {
+            $reason = $request->custom_reason;
+        }
+
+        // Lưu lý do giải trình và cập nhật trạng thái
+        $attendance->user_id = auth()->id();
+        $attendance->justification = $reason;
+        $attendance->status = 3; // Đang xem xét
+        $attendance->save();
+
+        // Gửi email xác nhận
+        $name = auth()->user()->name;
+        Mail::send('email.email_reminder', compact('name'), function ($email) {
+            $user_email = auth()->user()->email;
+            $email->subject('Đơn bạn đã nộp thành công!');
+            $email->to($user_email, 'Vui thế thôi');
+        });
+
+        // Điều hướng lại và hiển thị thông báo
+        return redirect()->back()->with('success', 'Lý do đã được gửi!');
+    }
+
+
+    public function pendingRequests()
+    {
+        // Lấy các bản ghi `check-out` có `status = 3`
+        $pendingRequests = User_Attendance::where('status', 3)
+            ->where('type', 'out')
+            ->orWhere('type', 'in')
+            ->paginate(5);
+
+        return view('attendances.request', compact('pendingRequests'));
+    }
+
+
+
+    public function acceptRequest($id)
+    {
+        $request = User_Attendance::findOrFail($id);
+        $request->status = 1; // Đặt status về hợp lệ
+        $request->save();
+
+        return redirect()->route('attendance.requests')->with('success', 'Đơn đã được chấp nhận.');
+    }
+
+    public function rejectRequest($id)
+    {
+        $request = User_Attendance::findOrFail($id);
+        $request->status = 0; // Đặt status về không hợp lệ
+        $request->save();
+
+        return redirect()->route('attendance.requests')->with('error', 'Đơn đã bị từ chối.');
     }
 
 
 
     // Phương thức báo cáo hàng tháng
     public function monthlyReport(Request $request)
-{
-    $userId = Auth::id();
-    $month = $request->input('month', now()->month);
-    $year = $request->input('year', now()->year);
+    {
+        $userId = Auth::id();
+        $month = $request->input('month', now()->month);
+        $year = $request->input('year', now()->year);
 
-    $employeeData = [
-        'name' => User::find($userId)->name,
-        'position' => User::find($userId)->position,
-        'attendance' => [],
-    ];
-    
-    $daysInMonth = Carbon::create($year, $month)->daysInMonth;
+        $employeeData = [
+            'name' => User::find($userId)->name,
+            'position' => User::find($userId)->position,
+            'attendance' => [],
+        ];
 
-    for ($day = 1; $day <= $daysInMonth; $day++) {
-        $date = Carbon::create($year, $month, $day);
-        $attendances = User_attendance::where('user_id', $userId)
-            ->whereDate('time', $date)
-            ->orderBy('time')
-            ->get();
+        $daysInMonth = Carbon::create($year, $month)->daysInMonth;
 
-        if ($attendances->isNotEmpty()) {
-            foreach ($attendances as $attendance) {
-                $type = $attendance->type;
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $date = Carbon::create($year, $month, $day);
+            $attendances = User_attendance::where('user_id', $userId)
+                ->whereDate('time', $date)
+                ->orderBy('time')
+                ->get();
 
-                if (!isset($employeeData['attendance'][$date->toDateString()])) {
-                    $employeeData['attendance'][$date->toDateString()] = [
-                        'checkIn' => null,
-                        'checkOut' => null,
-                        'hours' => 0,
-                    ];
-                }
+            if ($attendances->isNotEmpty()) {
+                foreach ($attendances as $attendance) {
+                    $type = $attendance->type;
 
-                if ($type === 'in') {
-                    $employeeData['attendance'][$date->toDateString()]['checkIn'] = $attendance->time;
-                } elseif ($type === 'out') {
-                    $checkInTime = $employeeData['attendance'][$date->toDateString()]['checkIn'];
-                    if ($checkInTime !== null) {
-                        $checkOutTime = $attendance->time;
-                        $hoursWorked = Carbon::parse($checkInTime)->diffInHours(Carbon::parse($checkOutTime));
-                        $employeeData['attendance'][$date->toDateString()]['checkOut'] = $checkOutTime;
-                        $employeeData['attendance'][$date->toDateString()]['hours'] = $hoursWorked;
+                    if (!isset($employeeData['attendance'][$date->toDateString()])) {
+                        $employeeData['attendance'][$date->toDateString()] = [
+                            'checkIn' => null,
+                            'checkOut' => null,
+                            'hours' => 0,
+                        ];
+                    }
+
+                    if ($type === 'in') {
+                        $employeeData['attendance'][$date->toDateString()]['checkIn'] = $attendance->time;
+                    } elseif ($type === 'out') {
+                        $checkInTime = $employeeData['attendance'][$date->toDateString()]['checkIn'];
+                        if ($checkInTime !== null) {
+                            $checkOutTime = $attendance->time;
+                            $hoursWorked = Carbon::parse($checkInTime)->diffInHours(Carbon::parse($checkOutTime));
+                            $employeeData['attendance'][$date->toDateString()]['checkOut'] = $checkOutTime;
+                            $employeeData['attendance'][$date->toDateString()]['hours'] = $hoursWorked;
+                        }
                     }
                 }
             }
         }
+
+        return view('attendances.monthly_report', compact('employeeData', 'month', 'year'));
     }
 
-    return view('attendances.monthly_report', compact('employeeData', 'month', 'year'));
-}
 
 
-    
 
     // Phương thức báo cáo cho phòng ban
     public function departmentReport(Request $request)

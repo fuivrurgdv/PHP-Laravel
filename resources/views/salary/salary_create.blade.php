@@ -16,11 +16,11 @@
 </head>
 <body id="page-top">
     <div id="wrapper">
-        @include('fe_admin.slidebar')
+        @include('admin.slidebar')
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                @include('fe_admin.topbar')
+                @include('admin.topbar')
                 
                 <div class="container-fluid">
                     @if (session('success'))

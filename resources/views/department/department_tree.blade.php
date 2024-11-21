@@ -41,7 +41,7 @@
 
 <div id="sub-tree-{{ $department->id }}" class="sub-tree">
     @foreach ($department->children as $child)
-        @include('fe_department.department_tree', ['department' => $child])
+        @include('department.department_tree', ['department' => $child])
     @endforeach
 </div>
 

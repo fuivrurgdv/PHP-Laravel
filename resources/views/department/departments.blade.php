@@ -24,11 +24,11 @@
 
 <body id="page-top">
     <div id="wrapper">
-        @include('fe_admin.slidebar')
+        @include('admin.slidebar')
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                @include('fe_admin.topbar')
+                @include('admin.topbar')
 
                 <div class="container-fluid">
                     {{-- @if (session('success'))
@@ -62,7 +62,7 @@
                                 <p>Không tìm thấy phòng ban nào khớp với từ khóa.</p>
                             @else
                             @foreach ($departments as $department)
-                            @include('fe_department.department_tree', ['department' => $department])
+                            @include('department.department_tree', ['department' => $department])
                         @endforeach
                             @endif
                         </div>
