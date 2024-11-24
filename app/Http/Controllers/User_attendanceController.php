@@ -159,7 +159,7 @@ class User_attendanceController extends Controller
         $reason = $request->explanation;
         $name = $user->name;
 
-        Mail::send('emails.accepted', compact('reason', 'name'), function ($email) use ($user) {
+        Mail::send('email.accepted', compact('reason', 'name'), function ($email) use ($user) {
             $email->subject('Đơn bạn đã được chấp nhận!');
             $email->to($user->email);
         });
@@ -177,7 +177,7 @@ class User_attendanceController extends Controller
         $name = $user->name;
 
 
-        Mail::send('emails.rejected', compact('reason', 'name'), function ($email) use ($user) {
+        Mail::send('email.rejected', compact('reason', 'name'), function ($email) use ($user) {
             $email->subject('Đơn bạn đã bị từ chối');
             $email->to($user->email, $user->name);
         });

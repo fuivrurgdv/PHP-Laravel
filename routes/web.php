@@ -6,8 +6,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TestExcelController;
 use App\Exports\UsersExport;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SettingController;
+use App\Models\Payroll;
 use App\Models\Setting;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +98,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/setting', [SettingController::class, 'showWorkTime'])->name('setting');
     Route::post('/setting/update', [SettingController::class, 'updateWorkTime'])->name('setting.update');
  });
+
+ Route::middleware('auth')->group(function () {
+    Route::get('/payroll/calculate', [PayrollController::class, 'showPayrollForm'])->name('payroll.form');
+    Route::post('/payroll/calculate', [PayrollController::class, 'calculatePayroll'])->name('payroll.calculate');
+    Route::post('/payroll/store', [PayrollController::class, 'storePayroll'])->name('payroll.store');
+    Route::get('/payrolls', [PayrollController::class, 'showPayrolls'])->name('payrolls.index');
+ });
+ 
+
 
 Route::middleware('auth')->group(function () {
    Route::get('/salary',[SalaryController::class, 'index'])->name('salary');

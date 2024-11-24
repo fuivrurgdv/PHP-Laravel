@@ -36,4 +36,14 @@ class Salary_level extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class, 'salary_level_id');
+    }
+
+    public function payrolls()
+    {
+        return $this->hasMany(Payroll::class);
+    }
+
 }

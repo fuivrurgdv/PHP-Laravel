@@ -63,4 +63,10 @@ class User extends Authenticatable
     public function isActive(){
         return $this->status === 1;
     }
+
+    public function salaryLevel()
+    {
+        return $this->belongsTo(Salary_Level::class, 'salary_level_id');
+    }
+
 }
