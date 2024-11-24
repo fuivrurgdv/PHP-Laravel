@@ -129,7 +129,7 @@ class User_attendanceController extends Controller
         Mail::send('email.email_reminder', compact('name'), function ($email) {
             $user_email = auth()->user()->email;
             $email->subject('Đơn bạn đã nộp thành công!');
-            $email->to($user_email, 'Vui thế thôi');
+            $email->to($user_email, 'abc');
         });
 
         // Điều hướng lại và hiển thị thông báo
@@ -153,8 +153,16 @@ class User_attendanceController extends Controller
     public function acceptRequest($id)
     {
         $request = User_Attendance::findOrFail($id);
+        $user = $request->user;
         $request->status = 1; // Đặt status về hợp lệ
         $request->save();
+        $reason = $request->explanation;
+        $name = $user->name;
+
+        Mail::send('emails.accepted', compact('reason', 'name'), function ($email) use ($user) {
+            $email->subject('Đơn bạn đã được chấp nhận!');
+            $email->to($user->email);
+        });
 
         return redirect()->route('attendance.requests')->with('success', 'Đơn đã được chấp nhận.');
     }
@@ -162,8 +170,17 @@ class User_attendanceController extends Controller
     public function rejectRequest($id)
     {
         $request = User_Attendance::findOrFail($id);
+        $user = $request->user;
         $request->status = 0; // Đặt status về không hợp lệ
         $request->save();
+        $reason = $request->explanation;
+        $name = $user->name;
+
+
+        Mail::send('emails.rejected', compact('reason', 'name'), function ($email) use ($user) {
+            $email->subject('Đơn bạn đã bị từ chối');
+            $email->to($user->email, $user->name);
+        });
 
         return redirect()->route('attendance.requests')->with('error', 'Đơn đã bị từ chối.');
     }
