@@ -128,7 +128,7 @@
             <a href="{{ route('payrolls.index') }}" >Quản lý lương</a>
           </li>
           <li>
-            <a href="{{ route('payroll.form') }}" >Quản lý lương2</a>
+            <a href="{{ route('payroll.form') }}" >Tính lương</a>
           </li>
           </ul>
         </div>

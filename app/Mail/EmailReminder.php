@@ -27,11 +27,10 @@ class EmailReminder extends Mailable
     /**
      * Get the message envelope.
      */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Email nhắc nhở chấm công ',
-        );
+        return $this->subject('Nhắc nhở Check-in/Check-out')
+            ->view('emails.reminder');
     }
 
     /**

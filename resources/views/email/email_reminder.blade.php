@@ -338,7 +338,7 @@ ul.social li{
                   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                       <td style="text-align: left; padding-right: 10px;">
-                      	<h3 class="heading">About</h3>
+                      	<h3 class="heading">Về chúng tôi</h3>
                       	<p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
                       </td>
                     </tr>
@@ -348,7 +348,7 @@ ul.social li{
                   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                       <td style="text-align: left; padding-left: 5px; padding-right: 5px;">
-                      	<h3 class="heading">Contact Info</h3>
+                      	<h3 class="heading">Liên hệ</h3>
                       	<ul>
 					                <li><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
 					                <li><span class="text">+2 392 3929 210</span></a></li>

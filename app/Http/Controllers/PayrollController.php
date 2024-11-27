@@ -95,17 +95,17 @@ class PayrollController extends Controller
         $day = now()->format('d/m/Y');
         // dd($user);
         // Gửi email thông báo cho nhân viên
-        // Mail::send('email.salary_notification', [
-        //     'day' => $day,
-        //     'user' => $user->name,
-        //     'salary_received' => $request->salary_received,
-        //     'valid_days' => $request->valid_days,
-        //     'invalid_days' => $request->invalid_days,
-        //     'salary_coefficient' => $request->salary_coefficient,
-        // ], function ($email) use ($user) {
-        //     $email->subject('Thông báo lương tháng ' . now()->format('m/Y'));
-        //     $email->to($user->email, $user->name);
-        // });
+        Mail::send('email.salary_notification', [
+            'day' => $day,
+            'user' => $user->name,
+            'salary_received' => $request->salary_received,
+            'valid_days' => $request->valid_days,
+            'invalid_days' => $request->invalid_days,
+            'salary_coefficient' => $request->salary_coefficient,
+        ], function ($email) use ($user) {
+            $email->subject('Thông báo lương tháng ' . now()->format('m/Y'));
+            $email->to($user->email, $user->name);
+        });
 
         return redirect()->route('payroll.calculate')->with('success', 'Lương đã được lưu thành công và thông báo đã được gửi.');
     }

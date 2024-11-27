@@ -87,7 +87,7 @@
                     <a href="{{ route('payroll.store') }}" class="btn btn-success"
                     onclick="event.preventDefault(); 
                          document.getElementById('payroll-form').submit();">
-                    Lưu trữ tính lương
+                    Lưu trữ 
                 </a>
 
                 <form id="payroll-form" action="{{ route('payroll.store') }}" method="POST" style="display: none;">
