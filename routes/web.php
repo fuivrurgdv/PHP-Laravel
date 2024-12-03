@@ -13,6 +13,7 @@ use App\Models\Payroll;
 use App\Models\Setting;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/setting', [SettingController::class, 'showWorkTime'])->name('setting');
     Route::post('/setting/update', [SettingController::class, 'updateWorkTime'])->name('setting.update');
+    Route::post('/send-reminders', [SettingController::class, 'sendReminders'])
+        ->name('send.reminders');
  });
 
  Route::middleware('auth')->group(function () {
@@ -104,6 +107,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/payroll/calculate', [PayrollController::class, 'calculatePayroll'])->name('payroll.calculate');
     Route::post('/payroll/store', [PayrollController::class, 'storePayroll'])->name('payroll.store');
     Route::get('/payrolls', [PayrollController::class, 'showPayrolls'])->name('payrolls.index');
+    Route::get('/run-payroll-calculate', function () {
+        $exitCode = Artisan::call('payroll:calculate', ['--testTime' => '24:00:00']);
+        return redirect()->back()->with('success', 'Tính lương cho tất cả nhân viên thành công!');
+    })->name('run.payroll.calculate');
+
  });
  
 

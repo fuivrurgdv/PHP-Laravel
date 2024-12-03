@@ -107,7 +107,7 @@ class PayrollController extends Controller
             $email->to($user->email, $user->name);
         });
 
-        return redirect()->route('payroll.calculate')->with('success', 'Lương đã được lưu thành công và thông báo đã được gửi.');
+        return redirect()->route('payroll.calculate')->with('success', 'Lương đã được lưu thành công ');
     }
 
     public function showPayrolls(Request $request)

@@ -124,11 +124,12 @@
             <li>
             <a href="{{ route('attendance.requests') }}" >Quản lý đơn giải trình</a>
           </li>
-          <li>
-            <a href="{{ route('payrolls.index') }}" >Quản lý lương</a>
-          </li>
+          
           <li>
             <a href="{{ route('payroll.form') }}" >Tính lương</a>
+          </li>
+          <li>
+            <a href="{{ route('payrolls.index') }}" >Quản lý lương</a>
           </li>
           </ul>
         </div>

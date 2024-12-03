@@ -139,6 +139,7 @@
                                         <th>Số điện thoại</th>
                                         <th>Chức vụ</th>
                                         <th>Phòng ban</th>
+                                        <th>Bậc lương</th>
                                         <th>Chức năng</th>
                                     </tr>
                                 </thead>
@@ -161,6 +162,7 @@
                                             Chưa xác định
                                             @endif
                                         </td>
+                                        <td>{{ $user->salaryLevel->name }}</td>
                                         <td>
                                             <a href="{{ route('users.detail', $user->id) }}" class="btn btn-primary">
                                                 <i class="fas fa-eye"></i>
