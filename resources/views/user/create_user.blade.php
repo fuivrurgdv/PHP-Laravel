@@ -67,6 +67,17 @@
                                 </div>
 
 
+                                <div class="form-group">
+                                    <label for="salary_level_id">Bậc lương:</label>
+                                    <select name="salary_level_id" id="salary_level_id" class="form-control" >
+                                        <option value="">-- Chọn bậc lương --</option>
+                                        @foreach($salaryLevel as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+
                                 {{-- <div class="form-group">
                                     <label for="name">Tên:</label>
                                     <input type="text" name="name" id="name" class="form-control" 

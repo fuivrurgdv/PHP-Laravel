@@ -90,6 +90,7 @@ class UserController extends Controller
             ],
             'position' => 'required|string|max:100',
             'department_id' => 'required|exists:departments,id',
+            'salary_level_id' => 'required',
             'role' => 'required|integer', // Đảm bảo trường role phải được nhập
 
         ], [
