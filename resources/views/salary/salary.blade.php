@@ -204,10 +204,10 @@
                                                                     <label for="name">Tên cấp bậc</label>
                                                                     <input type="text" class="form-control" id="name" name="name" value="{{ $salaryLevel->name }}" required>
                                                                 </div>
-                                                                {{-- <div class="form-group">
+                                                                <div class="form-group">
                                                                     <label for="monthly_salary">Lương tháng</label>
                                                                     <input type="text" class="form-control" id="monthly_salary" name="monthly_salary" value="{{ number_format($salaryLevel->monthly_salary, 0, '.', ',') }}" required>
-                                                                </div> --}}
+                                                                </div>
                                                                 <div class="form-group">
                                                                     <label for="daily_salary">Lương ngày</label>
                                                                     <input type="text" class="form-control" id="daily_salary" name="daily_salary" value="{{ number_format($salaryLevel->daily_salary, 0, '.', ',') }}" required>

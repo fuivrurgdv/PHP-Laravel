@@ -35,34 +35,34 @@ class SalaryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:50|unique:salary_level,name',
-            // 'monthly_salary' => 'required|string|unique:salary_level,monthly_salary',
+            'monthly_salary' => 'required|string|unique:salary_level,monthly_salary',
             'daily_salary' => 'required|string|unique:salary_level,daily_salary',
         ], [
             'name.required' => 'Tên cấp bậc là bắt buộc.',
             'name.unique' => 'Cấp bậc đã tồn tại.',
-            // 'monthly_salary.required' => 'Lương tháng là bắt buộc.',
+            'monthly_salary.required' => 'Lương tháng là bắt buộc.',
             'daily_salary.required' => 'Lương ngày là bắt buộc.',
         ]);
 
-        //$monthlySalary = $this->parseSalary($request->monthly_salary);
+        $monthlySalary = $this->parseSalary($request->monthly_salary);
         $dailySalary = $this->parseSalary($request->daily_salary);
 
-        // if ($monthlySalary < 1000000) {
-        //     return redirect()->back()->withErrors(['monthly_salary' => 'Lương tháng phải ít nhất là 1,000,000 VND.']);
-        // }
+        if ($monthlySalary < 1000000) {
+            return redirect()->back()->withErrors(['monthly_salary' => 'Lương tháng phải ít nhất là 1,000,000 VND.']);
+        }
 
         if ($dailySalary < 100000) {
             return redirect()->back()->withErrors(['daily_salary' => 'Lương ngày phải ít nhất là 100,000 VND.']);
         }
 
         $existingSalaryLevel = Salary_level::
-        //where('monthly_salary', $monthlySalary)
-            where('daily_salary', $dailySalary)
+        where('monthly_salary', $monthlySalary)
+            ->where('daily_salary', $dailySalary)
             ->first();
 
         if ($existingSalaryLevel) {
             return redirect()->back()->withErrors([
-                // 'monthly_salary' => 'Lương tháng và lương ngày đã tồn tại cho cấp bậc này.',
+                'monthly_salary' => 'Lương tháng và lương ngày đã tồn tại cho cấp bậc này.',
                 'daily_salary' => 'Lương tháng và lương ngày đã tồn tại cho cấp bậc này.'
             ]);
         }
@@ -71,7 +71,7 @@ class SalaryController extends Controller
 
         Salary_level::create([
             'name' => $request->name,
-            // 'monthly_salary' => $monthlySalary,
+             'monthly_salary' => $monthlySalary,
             'daily_salary' => $dailySalary,
             'status' => 1,
             'created_at' => now(),
@@ -117,35 +117,35 @@ class SalaryController extends Controller
         // Xác thực dữ liệu đầu vào
         $request->validate([
             'name' => 'required|string|max:50|unique:salary_level,name,' . $salaryLevel->id,
-            //'monthly_salary' => 'required|string|unique:salary_level,monthly_salary,' . $salaryLevel->id,
+            'monthly_salary' => 'required|string|unique:salary_level,monthly_salary,' . $salaryLevel->id,
             'daily_salary' => 'required|string|unique:salary_level,daily_salary,' . $salaryLevel->id,
         ], [
             'name.required' => 'Tên cấp bậc là bắt buộc.',
             'name.unique' => 'Cấp bậc đã tồn tại.',
-            // 'monthly_salary.required' => 'Lương tháng là bắt buộc.',
+            'monthly_salary.required' => 'Lương tháng là bắt buộc.',
             'daily_salary.required' => 'Lương ngày là bắt buộc.',
         ]);
 
-        //$monthlySalary = $this->parseSalary($request->monthly_salary);
+        $monthlySalary = $this->parseSalary($request->monthly_salary);
         $dailySalary = $this->parseSalary($request->daily_salary);
 
-        // if ($monthlySalary < 1000000) {
-        //     return redirect()->back()->withErrors(['monthly_salary' => 'Lương tháng phải ít nhất là 1,000,000 VND.']);
-        // }
+        if ($monthlySalary < 1000000) {
+            return redirect()->back()->withErrors(['monthly_salary' => 'Lương tháng phải ít nhất là 1,000,000 VND.']);
+        }
 
         if ($dailySalary < 100000) {
             return redirect()->back()->withErrors(['daily_salary' => 'Lương ngày phải ít nhất là 100,000 VND.']);
         }
 
         $existingSalaryLevel = Salary_level::
-        //where('monthly_salary', $monthlySalary)
-            where('daily_salary', $dailySalary)
+        where('monthly_salary', $monthlySalary)
+            ->where('daily_salary', $dailySalary)
             ->where('id', '!=', $salaryLevel->id) // Đảm bảo không kiểm tra bản ghi hiện tại
             ->first();
 
         if ($existingSalaryLevel) {
             return redirect()->back()->withErrors([
-                //'monthly_salary' => 'Lương tháng và lương ngày đã tồn tại cho cấp bậc này.',
+                'monthly_salary' => 'Lương tháng và lương ngày đã tồn tại cho cấp bậc này.',
                 'daily_salary' => 'Lương tháng và lương ngày đã tồn tại cho cấp bậc này.'
             ]);
         }
@@ -153,7 +153,7 @@ class SalaryController extends Controller
         // Cập nhật thông tin mức lương
         $salaryLevel->update([
             'name' => $request->name,
-            //'monthly_salary' => $monthlySalary,
+            'monthly_salary' => $monthlySalary,
             'daily_salary' => $dailySalary,
             'status' => $request->status,
             'updated_at' => now(),
