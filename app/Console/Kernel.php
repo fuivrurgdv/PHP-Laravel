@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SendReminderEmails;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -12,7 +14,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('send:attendance-reminder')->dailyAt('11:30');
+        // Đặt lịch cho lệnh gửi email vào thời gian định kỳ
+
+        // Log để kiểm tra lịch trình chạy
+        $schedule->command('emails:send-reminders')->everyMinute();
+        $schedule->command('payroll:calculate')->everyMinute();
     }
 
     /**
@@ -24,10 +30,10 @@ class Kernel extends ConsoleKernel
 
         require base_path('routes/console.php');
     }
-    protected $routeMiddleware = [
-        // ...
-        'checklogin' => \App\Http\Middleware\CheckLogin::class,
-    ];
+    // protected $routeMiddleware = [
+    //     // ...
+    //     'checklogin' => \App\Http\Middleware\CheckLogin::class,
+    // ];
    
 
 }

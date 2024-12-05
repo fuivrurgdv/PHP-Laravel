@@ -9,6 +9,7 @@ use App\Exports\UsersExport;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ChartController;
 use App\Models\Payroll;
 use App\Models\Setting;
 use Maatwebsite\Excel\Facades\Excel;
@@ -113,7 +114,14 @@ Route::middleware('auth')->group(function () {
     })->name('run.payroll.calculate');
 
  });
- 
+
+ Route::middleware('auth')->group(function () {
+    Route::get('/chart', [ChartController::class, 'chartView'])->name('chart.view');
+    Route::get('/api/user-count-by-department', [ChartController::class, 'getUserCountByDepartment']);
+    Route::get('/employee-ratio', [ChartController::class, 'employeeRatioView'])->name('employee.ratio');
+    Route::get('/api/gender-ratio-by-department/{departmentId}', [ChartController::class, 'getGenderRatioByDepartment']);
+    Route::get('/gender-ratio', [ChartController::class, 'genderRatioView'])->name('gender.ratio');
+});
 
 
 Route::middleware('auth')->group(function () {

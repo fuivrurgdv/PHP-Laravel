@@ -45,6 +45,8 @@
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Tính Lương</button>
+                        <a href="{{ route('run.payroll.calculate') }}" class="btn btn-primary mt-3">Tính lương cho tất cả nhân
+                            viên</a>
                     </form>
 
                     <!-- Bảng thông tin -->

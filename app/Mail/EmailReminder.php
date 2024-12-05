@@ -15,7 +15,7 @@ class EmailReminder extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private User $user;
+    public User $user;
     /**
      * Create a new message instance.
      */
@@ -36,15 +36,15 @@ class EmailReminder extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'fe_email.email_reminder',
-            with: [
-                'user' => $this->user
-            ]
-        );
-    }
+    // public function content(): Content
+    // {
+    //     return new Content(
+    //         view: 'fe_email.email_reminder',
+    //         with: [
+    //             'user' => $this->user
+    //         ]
+    //     );
+    // }
 
     /**
      * Get the attachments for the message.
