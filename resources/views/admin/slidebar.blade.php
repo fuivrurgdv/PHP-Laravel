@@ -122,14 +122,21 @@
               </a>
             </li>
             <li>
-            <a href="{{ route('attendance.requests') }}" >Quản lý đơn giải trình</a>
+            <a href="{{ route('attendance.requests') }}" >
+              <i class="zmdi zmdi-link"></i>Quản lý đơn giải trình</a>
           </li>
           
           <li>
-            <a href="{{ route('payroll.form') }}" >Tính lương</a>
+            <a href="{{ route('payroll.form') }}" >
+              <i class="zmdi zmdi-link"></i>Tính lương</a>
           </li>
           <li>
-            <a href="{{ route('payrolls.index') }}" >Quản lý lương</a>
+            <a href="{{ route('payrolls.index') }}" >
+              <i class="zmdi zmdi-link"></i>Quản lý lương</a>
+          </li>
+          <li>
+            <a href="{{ route('chart.view') }}" >
+              <i class="zmdi zmdi-link"></i>Biểu đồ thống kê</a>
           </li>
           </ul>
         </div>

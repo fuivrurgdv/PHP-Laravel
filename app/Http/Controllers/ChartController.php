@@ -11,13 +11,13 @@ class ChartController extends Controller
     //
     public function chartView()
     {
-        return view('fe_charts/charts');
+        return view('charts.employee_ratio');
     }
 
-    public function employeeRatioView()
-    {
-        return view('fe_charts.employee_ratio');
-    }
+    // public function employeeRatioView()
+    // {
+    //     return view('charts.employee_ratio');
+    // }
 
     public function getUserCountByDepartment()
     {

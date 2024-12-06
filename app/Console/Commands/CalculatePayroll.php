@@ -24,14 +24,14 @@ class CalculatePayroll extends Command
     public function handle()
     {
 
-        $payTimeConfig = Setting::where('name', 'payTime')->first();
+        // $payTimeConfig = Carbon::createFromTime(24, 0, 0);
 
-        if (!$payTimeConfig || !$payTimeConfig->time) {
-            Log::warning("Không tìm thấy cấu hình thời gian tính lương hoặc giá trị time trống.");
-            return;
-        }
+        // if (!$payTimeConfig || !$payTimeConfig->time) {
+        //     Log::warning("Không tìm thấy cấu hình thời gian tính lương hoặc giá trị time trống.");
+        //     return;
+        // }
 
-        $payTime = Carbon::createFromFormat('H:i:s', $payTimeConfig->time);
+        $payTime = Carbon::createFromTime(24, 0, 0);
 
 
         $testTime = $this->option('testTime');
@@ -64,8 +64,8 @@ class CalculatePayroll extends Command
 
 
         $users = User::with('salaryLevel')
-            ->where('role', 1)
-            ->where('is_active', 1)
+            ->where('role', 2)
+            ->where('status', 1)
             ->get();
 
         if ($users->isEmpty()) {
@@ -94,7 +94,7 @@ class CalculatePayroll extends Command
             $effectiveValidDays = max(0, $validDays - $deductionPercentage);
 
             $salaryReceived = (($monthlySalary * 1) / $totalWorkDays) * $effectiveValidDays;
-
+            $month = Carbon::now()->format('Y-m');
 
             Log::info("Tính lương cho nhân viên: {$user->name}, Lương nhận được: {$salaryReceived}, Ngày hợp lệ: {$validDays}, Ngày không hợp lệ: {$invalidDays}");
 
@@ -109,6 +109,7 @@ class CalculatePayroll extends Command
                     'valid_days' => $validDays,
                     'invalid_days' => $invalidDays,
                     // 'salary_coefficient' => $salaryCoefficient,
+                    'month' => $month,
                     'updated_at' => now(),
                 ]
             );

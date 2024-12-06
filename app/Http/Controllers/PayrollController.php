@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 class PayrollController extends Controller
 {
@@ -25,6 +26,16 @@ class PayrollController extends Controller
         $request->validate([
             'user_id' => 'required|exists:users,id',
         ]);
+
+        $monthStart = now()->startOfMonth();
+        $monthEnd = now()->endOfMonth();
+
+        $workDays = CarbonPeriod::create($monthStart, $monthEnd)
+            ->filter(function ($date) {
+                return !$date->isWeekend();
+            });
+
+        $totalWorkDays = $workDays->count();
 
 
         $user = User::with('salaryLevel')->findOrFail($request->user_id);
@@ -49,7 +60,7 @@ class PayrollController extends Controller
         $effectiveValidDays = $validDays - $deductionPercentage;
 
 
-        $salaryReceived = (($monthlySalary * 1) / 23) * $effectiveValidDays;
+        $salaryReceived = (($monthlySalary * 1) / $totalWorkDays) * $effectiveValidDays;
 
 
         return view('payroll.result', compact('user', 'validDays', 'invalidDays', 'salaryReceived'));
