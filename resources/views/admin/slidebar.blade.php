@@ -138,6 +138,10 @@
             <a href="{{ route('chart.view') }}" >
               <i class="zmdi zmdi-link"></i>Biểu đồ thống kê</a>
           </li>
+          <li>
+            <a href="{{ route('admin_leave_requests.index') }}" >
+              <i class="zmdi zmdi-link"></i>Quản lý đơn xin nghỉ</a>
+          </li>
           </ul>
         </div>
         <!-- Content -->

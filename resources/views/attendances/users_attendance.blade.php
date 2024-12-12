@@ -72,6 +72,52 @@
                             </form>
                         </div>
                         {{-- <h4 class="text-center">Ngày {{ date('d/m/Y') }}</h4> --}}
+                        <button class="btn btn-warning" data-toggle="modal" data-target="#leaveRequestModal"><i class="fas fa-paper-plane"></i></button>
+                                            <div class="modal fade" id="leaveRequestModal" tabindex="-1" role="dialog" aria-labelledby="leaveRequestModal" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="leaveRequestModal" style="color: black">Gửi đơn xin nghỉ</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('leave.request') }}" method="POST" id="leaveForm">
+                                                                @csrf
+                                                                
+                                      
+                                                                <div class="form-group">
+                                                                    <label for="leave_type" class="form-label">Loại nghỉ</label>
+                                                                    <select class="form-select" id="leave_type" name="leave_type" required>
+                                                                        <option value="morning">Nghỉ buổi sáng</option>
+                                                                        <option value="afternoon">Nghỉ buổi chiều</option>
+                                                                        <option value="full_day">Nghỉ cả ngày</option>
+                                                                        <option value="multiple_days">Nghỉ nhiều ngày</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group " id="datePickerContainer" >
+                                                                    
+                                                                    <label for="start_date" class="form-label">Từ ngày</label>
+                                                                        <input type="date" class="form-control" id="start_date" name="start_date">
+
+                                                                        <label for="end_date" class="form-label mt-2" id="end_date_label" style="display: none;">
+                                                                            Đến ngày
+                                                                        </label>
+                                                                        <input type="date" class="form-control" id="end_date" name="end_date"
+                                                                            style="display: none;">
+                                                                </div>
+                                                                <div class="form-group "  >
+                                                                    
+                                                                    <label for="reason" class="form-label">Lý do nghỉ</label>
+                                                                    <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-primary">Gửi</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                     </div>
                   
                     <table class="table table-striped table-bordered text-center">
@@ -192,6 +238,31 @@
                     otherReasonText.style.display = "none";
                 }
             });
+        });
+    </script>
+    <script>
+        // document.getElementById('profileImage').onclick = function() {
+        //     document.getElementById('avatarInput').click(); // Kích hoạt input file khi nhấp vào ảnh
+        // };
+    
+        // document.getElementById('avatarInput').onchange = function() {
+        //     document.getElementById('avatarForm').submit(); // Gửi form khi chọn file
+        // };
+    
+        document.getElementById('leave_type').addEventListener('change', function() {
+            const leaveType = this.value;
+            const endDateLabel = document.getElementById('end_date_label');
+            const endDateInput = document.getElementById('end_date');
+    
+            if (leaveType === 'multiple_days') {
+                endDateLabel.style.display = 'block';
+                endDateInput.style.display = 'block';
+                endDateInput.required = true;
+            } else {
+                endDateLabel.style.display = 'none';
+                endDateInput.style.display = 'none';
+                endDateInput.required = false;
+            }
         });
     </script>
 </body>

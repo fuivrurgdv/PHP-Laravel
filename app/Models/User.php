@@ -26,6 +26,7 @@ class User extends Authenticatable
         'phone_number',
         'status',
         'position',
+        'leave_balance',
         'department_id',
         'salary_level_id',
         'role',
@@ -67,6 +68,11 @@ class User extends Authenticatable
     public function salaryLevel()
     {
         return $this->belongsTo(Salary_Level::class, 'salary_level_id');
+    }
+
+    public function leaveRequests()
+    {
+        return $this->hasMany(LeaveRequest::class);
     }
 
 }

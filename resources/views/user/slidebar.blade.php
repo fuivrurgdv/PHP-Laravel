@@ -106,11 +106,14 @@
                 <i class="zmdi zmdi-link"></i> Quản lý chấm công --}}
               </a>
             </li>
-            {{-- <li>
-              <a href="{{ route('department.report') }}">
-                <i class="zmdi zmdi-widgets"></i> Quản lý chấm công
+            
+            <li>
+              <a href="{{ route('leave_requests.index') }}">
+                <i class="zmdi zmdi-widgets"></i> Quản lí các đơn
+                xin
+                nghỉ
               </a>
-            </li> --}}
+            </li>
             {{-- <li>
               <a href="{{ route('salary') }}">
                 <i class="zmdi zmdi-link"></i> Quản lý bậc lương
