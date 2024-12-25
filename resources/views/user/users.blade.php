@@ -137,7 +137,7 @@
                                         <th>Tên</th>
                                         <th>Email</th>
                                         <th>Số điện thoại</th>
-                                        <th>Chức vụ</th>
+                                        
                                         <th>Phòng ban</th>
                                         <th>Bậc lương</th>
                                         <th>Chức năng</th>
@@ -151,7 +151,7 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone_number }}</td>
-                                        <td>{{ $user->position }}</td>
+                                        
                                         <td>
                                             @if ($user->department)
                                             {{ $user->department->name }}

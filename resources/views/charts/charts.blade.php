@@ -111,19 +111,7 @@
     <script src="{{ asset('fe-access/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <script src="{{ asset('fe-access/js/sb-admin-2.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.card').hide().fadeIn(1000);
-            $('.btn-primary').hover(
-                function () {
-                    $(this).addClass('animate__animated animate__pulse');
-                },
-                function () {
-                    $(this).removeClass('animate__animated animate__pulse');
-                }
-            );
-        });
-    </script>
+    
 </body>
 
 </html>

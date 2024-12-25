@@ -16,6 +16,19 @@
             width: 100%;
         }
     </style>
+    <style>
+        #employeeRatioChart,
+        #contractTypeChart,
+        #ageGenderChart {
+            max-width: 100%;
+            height: 400px;
+            /* Giới hạn chiều cao */
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -36,7 +49,11 @@
                             <div class="chart-container">
                                 <canvas id="employeeRatioChart"></canvas>
                             </div>
+                            <div class="chart-container" >
+                                <canvas id="genderRatioChart"></canvas>
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -60,7 +77,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', loadEmployeeRatioChart);
+        document.addEventListener('DOMContentLoaded', function () {
+    loadEmployeeRatioChart();
+    loadAgeGenderChart();
+});
 
 //         async function loadEmployeeRatioChart() {
 //     try {
@@ -173,7 +193,7 @@ async function loadEmployeeRatioChart() {
         const ctx = document.getElementById('employeeRatioChart').getContext('2d');
 
         new Chart(ctx, {
-            type: 'pie', // Biểu đồ tròn
+            type: 'bar', // Biểu đồ tròn
             data: {
                 labels: data.labels, // Nhãn (Tên phòng ban)
                 datasets: [{
@@ -224,7 +244,74 @@ async function loadEmployeeRatioChart() {
     }
 }
 
+async function loadAgeGenderChart() {
+    try {
+        const response = await fetch('api/gender-ratio-by-department');
+        const data = await response.json();
+
+        // Lấy danh sách phòng ban
+        const labels = [...new Set(data.map(item => item.department_name))];
+        
+        // Các nhóm tuổi và giới tính
+        const ageGroups = ['18-30', '31-45', '46+'];
+        const genders = ['male', 'female'];
+
+        const datasets = [];
+
+        // Tạo các datasets cho mỗi nhóm tuổi và giới tính
+        ageGroups.forEach((group, index) => {
+            genders.forEach(gender => {
+                const label = `Nhóm tuổi: ${group} - Giới tính: ${gender}`;
+                const color = gender === 'male' ? '#36A2EB' : '#FF6384'; // Màu cho nam và nữ
+
+                datasets.push({
+                    label: label,
+                    data: labels.map(department => {
+                        const filtered = data.find(item => 
+                            item.department_name === department &&
+                            item.age_group === group &&
+                            item.gender === gender
+                        );
+                        return filtered ? filtered.total : 0;
+                    }),
+                    backgroundColor: color,
+                    borderColor: '#000',
+                    borderWidth: 1
+                });
+            });
+        });
+
+        // Vẽ biểu đồ
+        new Chart(document.getElementById('genderRatioChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching age and gender chart data:', error);
+    }
+}
+
+
+
     </script>
+
+    
 </body>
 
 </html>

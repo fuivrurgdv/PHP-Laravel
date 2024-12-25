@@ -55,16 +55,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="position">Chức vụ:</label>
-                                    <input type="text" name="position" id="position" class="form-control" 
-                                           placeholder="Nhập chức vụ" value="{{ old('position') }}" required>
-                                    @error('position') <small class="text-danger">{{ $message }}</small> @enderror
-                                    <label for="name">Tên:</label>
-                                    <input type="text" name="name" id="name" class="form-control" 
-                                           placeholder="Nhập tên người dùng" value="{{ old('name') }}" required>
-                                    @error('name') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
+                                
 
 
                                 <div class="form-group">
@@ -77,53 +68,85 @@
                                     </select>
                                 </div>
 
-
-                                {{-- <div class="form-group">
-                                    <label for="name">Tên:</label>
-                                    <input type="text" name="name" id="name" class="form-control" 
-                                           placeholder="Nhập tên người dùng" value="{{ old('name') }}" required>
-                                    @error('name') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div> --}}
-
-                                <div class="form-group">
-                                    <label for="email">Email:</label>
-                                    <input type="email" name="email" id="email" class="form-control" 
-                                           placeholder="Nhập địa chỉ email" value="{{ old('email') }}" required>
-                                    @error('email') <small class="text-danger">{{ $message }}</small> @enderror
+                                <div class="form-group col-md-6">
+                                    <label for="gender">Giới tính:</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender_male" value="1" {{ old('gender', '1') == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="gender_male">Nam</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender" id="gender_female" value="0" {{ old('gender') == '0' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="gender_female">Nữ</label>
+                                    </div>
+                                    @error('gender') <small class="text-danger">{{ $message }}</small> @enderror
+                                    <div class="invalid-feedback">Vui lòng chọn giới tính.</div>
                                 </div>
+                            </div>
 
-                                <div class="form-group">
-                                    <label for="password">Mật khẩu:</label>
-                                    <input type="password" name="password" id="password" class="form-control" 
-                                           placeholder="Nhập mật khẩu" required minlength="6">
-                                    @error('password') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
+                            <div class="form-group col-md-6">
+                                <label for="role">Vai trò:</label>
+                                <select name="role" id="role" class="form-control" required>
+                                    <option value="">Chọn Vai trò</option>
+                                    <option value="1" {{ old('role') == 1 ? 'selected' : '' }}>Admin</option>
+                                    <option value="2" {{ old('role') == 2 ? 'selected' : '' }}>Nhân viên chính thức</option>
+                                    <option value="3" {{ old('role') == 3 ? 'selected' : '' }}>Nhân viên tạm thời</option>
+                                </select>
+                                @error('role') <small class="text-danger">{{ $message }}</small> @enderror
+                                <div class="invalid-feedback">Vui lòng chọn chức vụ.</div>
+                            </div>
 
-                                <div class="form-group">
-                                    <label for="password_confirmation">Xác nhận mật khẩu:</label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation" 
-                                           class="form-control" placeholder="Xác nhận mật khẩu" required>
-                                    @error('password_confirmation') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
+                            <div class="form-group">
+                                <label for="phone_number">Số điện thoại:</label>
+                                <input type="tel" name="phone_number" id="phone_number" class="form-control" 
+                                       placeholder="Nhập số điện thoại" value="{{ old('phone_number') }}">
+                                @error('phone_number') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+    
+                                    <div class="form-group">
+                                        <label for="name">Tên:</label>
+                                        <input type="text" name="name" id="name" class="form-control" 
+                                               placeholder="Nhập tên người dùng" value="{{ old('name') }}" required>
+                                        @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" name="email" id="email" class="form-control" 
+                                               placeholder="Nhập địa chỉ email" value="{{ old('email') }}" required>
+                                        @error('email') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="password">Mật khẩu:</label>
+                                        <input type="password" name="password" id="password" class="form-control" 
+                                               placeholder="Nhập mật khẩu" required minlength="6">
+                                        @error('password') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="password_confirmation">Xác nhận mật khẩu:</label>
+                                        <input type="password" name="password_confirmation" id="password_confirmation" 
+                                               class="form-control" placeholder="Xác nhận mật khẩu" required>
+                                        @error('password_confirmation') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div>
+    
+                                    
+    
+                                    {{-- <div class="form-group">
+                                        <label for="role">Vai trò:</label>
+                                        <select name="role" id="role" class="form-control" required>
+                                            <option value="">Chọn vai trò</option>
+                                            <option value="1">Admin</option>
+                                            <option value="4">Trưởng phòng</option>
+                                            <option value="3">Tổ trưởng</option>
+                                            <option value="2">Nhân viên</option>
+                                        </select>
+                                        @error('role') <small class="text-danger">{{ $message }}</small> @enderror
+                                    </div> --}}
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="phone_number">Số điện thoại:</label>
-                                    <input type="tel" name="phone_number" id="phone_number" class="form-control" 
-                                           placeholder="Nhập số điện thoại" value="{{ old('phone_number') }}">
-                                    @error('phone_number') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="role">Vai trò:</label>
-                                    <select name="role" id="role" class="form-control" required>
-                                        <option value="">Chọn vai trò</option>
-                                        <option value="1">Admin</option>
-                                        <option value="4">Trưởng phòng</option>
-                                        <option value="3">Tổ trưởng</option>
-                                        <option value="2">Nhân viên</option>
-                                    </select>
-                                    @error('role') <small class="text-danger">{{ $message }}</small> @enderror
-                                </div>
+                        
+                                
 
 
 

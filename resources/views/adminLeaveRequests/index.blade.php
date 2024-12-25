@@ -121,9 +121,9 @@
                         @if ($request->status === 0)
                             <span class="">Đang chờ</span>
                         @elseif ($request->status === 1)
-                            <span class="">Đã duyệt</span>
+                            <span class="text-success">Đã duyệt</span>
                         @else
-                            <span class="">Đã từ chối</span>
+                            <span class="text-danger">Đã từ chối</span>
                         @endif
                     </td>
                     {{-- <td>{{ $request->approvedBy->name ?? '-' }}</td> --}}

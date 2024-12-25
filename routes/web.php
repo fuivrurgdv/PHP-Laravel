@@ -12,6 +12,7 @@ use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\AnotherChartController;
 use App\Models\Payroll;
 use App\Models\Setting;
 use Maatwebsite\Excel\Facades\Excel;
@@ -117,14 +118,30 @@ Route::middleware('auth')->group(function () {
 
  });
 
- Route::middleware('auth')->group(function () {
-    Route::get('/chart', [ChartController::class, 'chartView'])->name('chart.view');
-    Route::get('/api/user-count-by-department', [ChartController::class, 'getUserCountByDepartment']);
-    Route::get('/employee-ratio', [ChartController::class, 'employeeRatioView'])->name('employee.ratio');
-    Route::get('/api/gender-ratio-by-department/{departmentId}', [ChartController::class, 'getGenderRatioByDepartment']);
-    Route::get('/gender-ratio', [ChartController::class, 'genderRatioView'])->name('gender.ratio');
-});
+//  Route::middleware('auth')->group(function () {
+//     Route::get('/chart', [ChartController::class, 'chartView'])->name('chart.view');
+//     Route::get('/api/user-count-by-department', [ChartController::class, 'getUserCountByDepartment']);
+//     Route::get('/employee-ratio', [ChartController::class, 'employeeRatioView'])->name('employee.ratio');
+//     Route::get('/api/gender-ratio-by-department}', [ChartController::class, 'getGenderRatioByDepartment']);
+//     Route::get('/gender-ratio', [ChartController::class, 'genderRatioView'])->name('gender.ratio');
+// });
 
+Route::middleware('auth')->group(function () {
+    Route::get('/charts-another', [AnotherChartController::class, 'index'])->name('charts.index');
+
+    Route::get('/chart-view', [ChartController::class, 'chartView'])->name('chart.view');
+    Route::get('/chart-view-test', [ChartController::class, 'view'])->name('view.view');
+    Route::get('/api/total-employees', [ChartController::class, 'getTotalEmployees']);
+
+
+    Route::get('/api/employee-ratio-by-department', [ChartController::class, 'getEmployeeRatioByDepartment']);
+    Route::get('/api/age-gender-stats-by-department', [ChartController::class, 'getAgeGenderStatsByDepartment']);
+    Route::get('/api/attendance-stats', [ChartController::class, 'getAttendanceStats']);
+    Route::get('/api/contract-type-by-department', [ChartController::class, 'getContractTypeByDepartment']);
+    Route::get('/api/gender-statistics', [ChartController::class, 'genderStatistics']);
+    Route::get('/api/departments', [ChartController::class, 'getDepartments']);
+    Route::get('/attendance-stats', [ChartController::class, 'getAttendanceStats']);
+});
 Route::middleware('auth')->group(function () {
     // Route::resource('reasons', ReasonController::class);
     // Route::get('/reasons', [ReasonController::class, 'index'])->name('reasons.index');

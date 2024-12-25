@@ -92,7 +92,7 @@
                                                                     <select class="form-select" id="leave_type" name="leave_type" required>
                                                                         <option value="morning">Nghỉ buổi sáng</option>
                                                                         <option value="afternoon">Nghỉ buổi chiều</option>
-                                                                        <option value="full_day">Nghỉ cả ngày</option>
+                                                                        
                                                                         <option value="multiple_days">Nghỉ nhiều ngày</option>
                                                                     </select>
                                                                 </div>

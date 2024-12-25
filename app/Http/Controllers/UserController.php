@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\User;
+use App\Models\Salary_level;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Exports\UsersExport;
@@ -33,8 +34,8 @@ class UserController extends Controller
 
         $users = $query->paginate(5); // Phân trang kết quả
         $departments = Department::all(); // Lấy tất cả phòng ban
-
-        return view('user/users', compact('users', 'departments', 'search'));
+        $salaryLevel = Salary_Level::all();
+        return view('user/users', compact('users', 'departments', 'search', 'salaryLevel'));
     }
 
     public function destroy(Request $request)
@@ -70,9 +71,12 @@ class UserController extends Controller
 
         // Lấy phòng ban con nếu đã chọn phòng ban cha
         $subDepartments = $request->has('parent_id') ? $this->getDepartments($request->input('parent_id')) : [];
-
-        return view('user.create_user', compact('departments', 'subDepartments'));
+        $salaryLevel = Salary_Level::all();
+        return view('user.create_user', compact('departments', 'subDepartments', 'salaryLevel'));
     }
+   
+
+    
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -88,8 +92,9 @@ class UserController extends Controller
                 'required',
                 'regex:/^84[0-9]{9,10}$/',
             ],
-            'position' => 'required|string|max:100',
+            
             'department_id' => 'required|exists:departments,id',
+            'gender' => 'required|in:0,1',
             'salary_level_id' => 'required',
             'role' => 'required|integer', // Đảm bảo trường role phải được nhập
 
@@ -113,7 +118,9 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
             'phone_number' => $request->phone_number,
             'department_id' => $request->department_id,
-            'position' => $request->position,
+            'salary_level_id' => $request->salary_level_id,
+            
+            'gender' => $request->gender,
             'status' => 1,
             'role' => $request->role , // Gán role mặc định nếu không có
             'created_by' => Auth::id(),

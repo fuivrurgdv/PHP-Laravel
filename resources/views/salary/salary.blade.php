@@ -102,14 +102,14 @@
                                                placeholder="Nhập tên bậc lương" required>
                                     </div>
             
-                                    {{-- <div class="mb-3">
+                                     <div class="mb-3">
                                         <label for="monthly_salary" class="form-label">Lương Tháng:</label>
                                         <input type="text" name="monthly_salary" id="monthly_salary"
                                                class="form-control money-input" placeholder="Nhập lương tháng" required>
                                         {{-- <small id="monthly_display" class="form-text text-muted">
                                             Bạn đã nhập: 0 ₫
                                         </small> --}}
-                                    {{-- </div> --}} 
+                                    </div> 
             
                                     <div class="mb-3">
                                         <label for="daily_salary" class="form-label">Lương Ngày:</label>
